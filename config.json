@@ -1,0 +1,242 @@
+{
+  "global": {
+    "tz": "US/Central",
+    "exchange" : "CME",
+    "asset": "GE",
+    "default_tick_size": 0.05,
+    "channel_id": 312
+  },
+  "filters": {
+    "filter_serial_contracts": true,
+    "num_outrights": 21,
+    "use_product_categories": true
+  },
+  "models": {
+    "followthrough": {
+      "save_dir": "~/dev/proxent/hdf5/ft",
+      "save_filename": "ft_snapshots.h5",
+      "sub_type": ["FUT"],
+      "use_theoretical_values": true,
+      "us_regular_tv": true,
+      "geometrical_mean_bias_factor": 0.70,
+      "min_orders": 0,
+      "offsets": ["500ms", "1s", "2s", "5s", "10s", "30s"],
+      "lookahead_window": 60,
+      "min_trade_quantity": 20,
+      "max_trade_quantity": 50000,
+      "min_trade_quality": 0,
+      "max_trade_quality": 1.5,
+      "min_trade_intensity": 0,
+      "max_trade_intensity": 2.0,
+      "trade_quality_cuts": [0, 0.1, 0.2, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.1, 1.25, 1.50],
+      "trade_intensity_cuts":  [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.50, 1.75, 2.0],
+      "trade_quantity_cuts": [20, 50, 100, 175, 200, 375, 500, 750, 1000, 2500, 5000, 10000, 50000],
+      "optimization_tolerance": 0.1,
+      "gradient_step": 0.01,
+      "max_followthrough": 0.25,
+      "error_analysis_bins": [-1.0, -0.25, -0.20, -0.15, -0.10, -0.05, 0, 0.05, 0.10, 0.15, 0.20, 0.25, 1.0],
+      "errors": {
+        "limits": [-10.0, -0.05, 0.10, 10.0],
+        "std": [0.35, 0.20, 0.35]
+      },
+      "model_subtype": "FUT",
+      "quantized_domain": {
+        "trade_quantity": 10,
+        "trade_quality": 10,
+        "trade_intensity": 10
+      },
+      "model_dir": "~/dev/proxent/data/models/current",
+      "weekly_dir": "~/dev/proxent/data/models/weekly",
+      "cpkl_file": "followthrough.cpkl",
+      "csv_file": "followthrough.csv",
+      "save_plots_as": "svg",
+      "model_offset": ["500ms"]
+    },
+    "triggers": {
+      "min_trade_quantity": 20,
+      "max_trade_quantity": 50000,
+      "num_outrights": 21,
+      "sub_type": ["FUT"],
+      "cpkl_file": "triggers.cpkl",
+      "standard_quantities_dir": "~/dev/proxent/data/models/current",
+      "standard_quantities": "standard_quantities.csv",
+      "outrights_only": true
+    },
+    "beta": {
+      "triggers_data_dir": "",
+      "triggers_data": "triggers.cpkl",
+      "followthrough_model_dir": "",
+      "followthrough_model": "followthroughs.cpkl",
+      "offsets": ["500ms", "2s", "5s", "10s"],
+      "use_theoretical_values": true,
+      "covariances_dir": "",
+      "covariances_file": "covariances.csv",
+      "num_outrights": 21,
+      "outrights_only": true,
+      "min_trigger_quantity": 20,
+      "min_trigger_quality": 0.1,
+      "us_regular_tv": true
+    },
+    "top_order": {
+
+    },
+    "largest_order": {
+      "binNode" : [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000,
+                   2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000,
+                   4200, 4400, 4600, 4800, 5000, 6000, 7000, 8000, 9000, 10000, 11000,
+                   12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000,
+                   22500, 25000, 27500, 30000, 32500, 35000, 37500, 40000, 42500,
+                   45000, 47500, 50000, 52500, 55000, 57500, 60000, 62500, 65000,
+                   67500, 70000],
+      "levelQtyMin": 100,
+      "minTimeSpan": 30,
+      "minPercentageChange": 0.25,
+      "joints": [0, 20000],
+      "numLarTargets":3,
+      "percentile_depth": 0.95,
+      "output_column_names":  ["time","product","tradePrice","passiveSide","totalQty","numOrders","Lar1","Lar2","Lar3"]
+    },
+    "theoretical_value": {
+      "min_outright_std": 0.02,
+      "outright_tick": 0.005,
+      "min_other_std": 0.05,
+      "other_tick": 0.005,
+      "fixed_pb_projection_std": 0.60,
+      "fixed_pb_tick": 0.005,
+      "spread_price_factor": 0.01,
+      "num_outrights": 21,
+      "num_packs": 5,
+      "too_wide_width": 2,
+      "too_wide_penalty": 2,
+      "regular_time_step": "100ms",
+      "covariances_dir": "~/dev/proxent/data/models/current",
+      "covariances_file": "covariance.csv",
+      "tv_dir": "~/dev/proxent/data/models/current",
+      "tv_file": "theoretical_values.csv",
+      "tv_var_file": "theoretical_values_variances.csv"
+    },
+    "top_and_fifo_fills": {
+      "data_file_name": "cme_top_and_fifo_fills.cpkl",
+      "definition":"outrights",
+      "covariances_dir": "~/dev/proxent/data/models/current",
+      "covariances_file": "covariance.csv",
+      "tv_dir": "~/dev/proxent/data/models/current",
+      "tv_file": "tv.csv",
+      "tv_var_file": "tv_var.csv",
+      "calendar_categories": [3, 6, 9, 12, 15, 18, 21, 24],
+      "butterfly_categories": [3, 6, 9, 12],
+      "num_outrights": 21,
+      "min_pro_rata_fill": 2,
+      "pnl_timeframes": ["0s", "2s", "5s", "10s", "30s"]
+    }
+  },
+  "reports": {
+    "cme_volume" : {
+      "calendar_categories": [3, 6, 9, 12, 15, 18, 21, 24, 36, 48],
+      "butterfly_categories": [3, 6, 9, 12],
+      "num_outrights": 21,
+      "num_calendars": 20,
+      "num_butterflies": 10,
+      "num_packs": 5,
+      "num_bundles": 4,
+      "num_others": 20,
+      "cdf_points": [0.1, 0.25, 0.90],
+      "volume_bar_width": 0.4,
+      "data_file_name": "cme_volume_analysis.cpkl"
+    },
+    "cme_packets_statistics": {
+      "data_file_name": "cme_packet_analysis.cpkl",
+      "summary_percentiles": [0.001, 0.01],
+      "packets_resample_time": "100ms",
+      "events_resample_time": "100ms",
+      "rolling_summary_time": "1s",
+      "rolling_summary_percentiles": [0.99, 0.995]
+    },
+    "cme_top_and_fifo_fills": {
+      "start_filter_time": "04:00:00",
+      "stop_filter_time": "16:00:00",
+      "calendar_categories": [3, 6, 9, 12, 15, 18, 21, 24],
+      "butterfly_categories": [3, 6, 9, 12],
+      "num_outrights": 21,
+      "histogram_bins": 40,
+      "min_pnl_ticks": -10.0,
+      "max_pnl_ticks": 10.0,
+      "pnl_timeframes": ["0s", "2s", "5s", "10s", "30s"],
+      "data_file_name": "cme_top_and_fifo_fills.cpkl"
+    },
+    "followthrough": {
+      "model_dir": "~/dev/proxent/data/models/current",
+      "dated_model_dir": "~/dev/proxent/data/models/",
+      "cpkl_file": "followthrough.cpkl",
+      "min_trade_quantity": 20,
+      "max_trade_quantity": 50000,
+      "min_trade_quality": 0,
+      "max_trade_quality": 1.5,
+      "min_trade_intensity": 0,
+      "max_trade_intensity": 2.0,
+      "trade_quality_cuts": [0, 0.1, 0.2, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.1, 1.25, 1.50],
+      "trade_intensity_cuts":  [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.50, 1.75, 2.0],
+      "trade_quantity_cuts": [20, 50, 100, 175, 200, 375, 500, 750, 1000, 2500, 5000, 10000, 50000],
+      "trade_quality_cross_sections": [0, 0.25, 0.50, 0.75, 1.0, 1.5],
+      "trade_intensity_cross_sections": [0, 0.25, 0.50, 1.0, 2.0],
+      "num_plot_vertices": 20,
+      "plot_angle": [15, 255],
+      "data_file_name": "followthrough_analysis.cpkl"
+    },
+    "followthrough_errors": {
+      "model_dir": "~/dev/proxent/data/models/current",
+      "cpkl_file": "followthrough.cpkl",
+      "min_trade_quantity": 20,
+      "max_trade_quantity": 50000,
+      "min_trade_quality": 0,
+      "max_trade_quality": 1.5,
+      "min_trade_intensity": 0,
+      "max_trade_intensity": 2.0,
+      "trade_quality_cuts": [0, 0.1, 0.2, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.1, 1.25, 1.50],
+      "trade_intensity_cuts":  [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.50, 1.75, 2.0],
+      "trade_quantity_cuts": [20, 50, 100, 175, 200, 375, 500, 750, 1000, 2500, 5000, 10000, 50000],
+      "error_analysis_bins": [-1.0, -0.25, -0.20, -0.15, -0.10, -0.05, 0, 0.05, 0.10, 0.15, 1.0],
+      "summary_percentiles": [0.01, 0.1, 0.25, 0.50, 0.75, 0.90, 0.99],
+      "histogram_bins": 100,
+      "data_file_name": "followthrough_errors.cpkl"
+    },
+    "color_theme": {
+      "primary": {
+        "0": "#2A5772",
+        "1": "#7194A8",
+        "2": "#47728B",
+        "3": "#15415B",
+        "4": "#05293F"
+      },
+      "secondary-1": {
+        "0": "#B35D3B",
+        "1": "#FFC0A7",
+        "2": "#DB8A6A",
+        "3": "#8F3C1B",
+        "4": "#631E02"
+      },
+      "secondary-2": {
+        "0": "#297A57",
+        "1": "#76B499",
+        "2": "#499675",
+        "3": "#126240",
+        "4": "#014427"
+      },
+      "secondary-3": {
+        "0": "#B37D3B",
+        "1": "#FFD7A7",
+        "2": "#DBA86A",
+        "3": "#8F5B1B",
+        "4": "#633702"
+      }
+    },
+    "reports_data_dir": "~/dev/proxent/reports",
+    "state_node": "state",
+    "plotting": {
+      "title_size": 10,
+      "suptitle_size": 12,
+      "width": 20,
+      "height": 10
+    }
+  }
+}
